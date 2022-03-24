@@ -1,0 +1,14 @@
+# -*- coding: utf-8 -*-
+
+API_ID = 17340135
+API_HASH = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+CHAT_ID = -1001084109436
+
+DOMAIN = 'https://authbot.putnik.tech'
+
+OAUTH_CLIENT_ID = '74ec0c483b8d708113ad83a49da413b4'
+OAUTH_CLIENT_SECRET = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+
+OAUTH_AUTH_ENDPOINT = 'https://meta.wikimedia.org/w/rest.php/oauth2/authorize'
+OAUTH_ACCESS_TOKEN_ENDPOINT = 'https://meta.wikimedia.org/w/rest.php/oauth2/access_token'
+OAUTH_RESOURCE_PROFILE_ENDPOINT = 'https://meta.wikimedia.org/w/rest.php/oauth2/resource/profile'

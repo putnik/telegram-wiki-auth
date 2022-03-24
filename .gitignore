@@ -1,0 +1,5 @@
+*.db
+*.session
+.idea
+config.py
+venv
