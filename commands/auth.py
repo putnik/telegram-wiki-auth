@@ -3,7 +3,7 @@
 from authlib.integrations.requests_client import OAuth2Session
 from config import OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_AUTH_ENDPOINT
 from utils.logs import log
-from utils.rights import remove_rights
+from utils.rights import set_rights, remove_rights
 from utils.tokens import create_state
 from utils.users import get_username, delete_user
 
@@ -16,7 +16,11 @@ async def auth_start(client, message):
         await auth_link(client, message)
         return
 
-    answer = "Вы уже авторизовались как [%s](https://ru.wikipedia.org/wiki/User:%s)." % (username, username)
+    set_rights(client, message.from_user.id)
+    answer = '''
+        Вы уже авторизованы как [%s](https://ru.wikipedia.org/wiki/User:%s).
+        Теперь вы можете отправлять сообщения в чате.
+    ''' % (username, username)
     await message.reply(answer, disable_web_page_preview=True)
 
 
