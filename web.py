@@ -53,9 +53,17 @@ def success():
         state = request.get_cookie('state')
         tg_id, tg_name = get_by_state(state, 1)
         username = get_username(tg_id)
-        return "Вы успешно авторизованы как %s!" % username
+        return '''
+            Вы успешно авторизованы как %s!
+            Пожалуйста, напишите боту <tt>/start</t> ещё раз,
+            чтобы получить возможность отправлять соообщения.
+        ''' % username
     except:
-        redirect("/failure")
+        return '''
+            Вы успешно авторизованы!
+            Пожалуйста, напишите боту <tt>/start</tt> ещё раз,
+            чтобы получить возможность отправлять соообщения.
+        '''
 
 
 @route('/failure')

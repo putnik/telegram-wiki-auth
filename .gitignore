@@ -1,5 +1,6 @@
 *.db
 *.session
+*.sqlite
 .idea
 config.py
 venv
