@@ -2,6 +2,7 @@
 
 from pyrogram import emoji
 from config import BOT_ID
+from utils.users import get_username
 
 RULES_URL = "https://telegra.ph/Pravila-chata-russkoj-Vikipedii-10-21"
 MESSAGE = """
@@ -13,5 +14,9 @@ MESSAGE = """
 
 
 async def welcome(client, message):
+    username = get_username(message.from_user.id)
+    if username is not None:
+        return
+
     text = MESSAGE.format(emoji.WAVING_HAND, RULES_URL, BOT_ID)
     await message.reply_text(text, disable_web_page_preview=True)
