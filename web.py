@@ -1,5 +1,5 @@
 from authlib.integrations.requests_client import OAuth2Session
-from bottle import redirect, request, response, route, run
+from bottle import redirect, request, response, route, run, template
 
 from config import OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_ACCESS_TOKEN_ENDPOINT, OAUTH_RESOURCE_PROFILE_ENDPOINT
 from utils.logs import log_web
@@ -42,7 +42,7 @@ def callback():
         response.set_cookie('state', state)
         redirect("/success")
     except Exception as err:
-        log_web('error', '', err)
+        log_web('error', 'callback', err)
         log_web('failure', '', request.url)
         redirect("/failure")
 
@@ -53,22 +53,25 @@ def success():
         state = request.get_cookie('state')
         tg_id, tg_name = get_by_state(state, 1)
         username = get_username(tg_id)
-        return '''
-            Вы успешно авторизованы как %s!
-            Пожалуйста, напишите боту <tt>/start</t> ещё раз,
-            чтобы получить возможность отправлять соообщения.
-        ''' % username
-    except:
-        return '''
-            Вы успешно авторизованы!
-            Пожалуйста, напишите боту <tt>/start</tt> ещё раз,
-            чтобы получить возможность отправлять соообщения.
-        '''
+
+        file = open('web/success.html', mode='r')
+        html = file.read()
+        file.close()
+
+        return template(html, name=username)
+    except Exception as err:
+        log_web('error', 'success', err)
+        log_web('failure', '', request.url)
+        redirect("/failure")
 
 
 @route('/failure')
 def failure():
-    return "Ошибка авторизации."
+    file = open('web/failure.html', mode='r')
+    html = file.read()
+    file.close()
+
+    return template(html)
 
 
 run(host='localhost', port=8080, debug=True)

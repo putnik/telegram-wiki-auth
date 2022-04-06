@@ -18,8 +18,8 @@ async def auth_start(client, message):
 
     set_rights(client, message.from_user.id)
     answer = '''
-        Вы уже авторизованы как [%s](https://ru.wikipedia.org/wiki/User:%s).
-        Теперь вы можете отправлять сообщения в чате.
+Вы уже авторизованы как [%s](https://ru.wikipedia.org/wiki/User:%s).
+Теперь вы можете отправлять сообщения в чате.
     ''' % (username, username)
     await message.reply(answer, disable_web_page_preview=True)
 

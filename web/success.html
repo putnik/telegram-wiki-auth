@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <title>Вы успешно авторизованы!</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            background: #d5fdf4;
+            vertical-align: middle;
+            text-align: center;
+        }
+        a {
+            color: #eaf3ff !important;
+        }
+        .notice {
+            display: inline-block;
+            margin: 5em;
+            width: 40%;
+            padding: 0 1em;
+            background: #14866d;
+            color: #fff;
+            font-size: 200%;
+            border-radius: 2px;
+        }
+    </style>
+    <body>
+        <div class="notice">
+            <p>Вы успешно авторизованы как {{name}}!</p>
+            <p>
+                Пожалуйста, ещё раз напишите <a href="https://t.me/RuwikiHelperBot">боту</a>
+                команду <code>/start</code>, чтобы получить возможность отправлять соообщения.
+            </p>
+        </div>
+    </body>
+</html>
