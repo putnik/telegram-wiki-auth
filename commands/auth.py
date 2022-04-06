@@ -44,6 +44,10 @@ async def auth_forget(client, message):
 
 
 async def auth_process(client, message):
+    log(message, 'process')
     tg_ids = get_all_ids()
     for tg_id in tg_ids:
         set_rights(client, tg_id)
+
+    answer = "%d пользователей обработано." % len(tg_ids)
+    await message.reply_chat_action(answer, disable_web_page_preview=True)
