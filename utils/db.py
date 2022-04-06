@@ -14,6 +14,18 @@ def execute_query(query: str):
     con.close()
 
 
+def fetch_all(query: str):
+    # print(query)
+    con = connect(DB_NAME)
+    cursor = con.cursor()
+
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    con.close()
+
+    return rows
+
+
 def fetch_one(query: str):
     # print(query)
     con = connect(DB_NAME)

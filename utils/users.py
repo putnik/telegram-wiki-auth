@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from utils.db import execute_query, fetch_value
+from utils.db import execute_query, fetch_all, fetch_value
 
 
 def init_users_table():
@@ -11,6 +11,10 @@ def init_users_table():
             wiki_name CHAR(255) NOT NULL
         )
     ''')
+
+
+def get_all_ids():
+    return fetch_all("SELECT tg_id FROM users")
 
 
 def get_username(tg_id: int):
