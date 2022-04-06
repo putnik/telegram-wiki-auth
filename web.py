@@ -50,15 +50,11 @@ def callback():
 @route('/success')
 def success():
     try:
-        state = request.get_cookie('state')
-        tg_id, tg_name = get_by_state(state, 1)
-        username = get_username(tg_id)
-
         file = open('web/success.html', mode='r')
         html = file.read()
         file.close()
 
-        return template(html, name=username)
+        return template(html)
     except Exception as err:
         log_web('error', 'success', err)
         log_web('failure', '', request.url)
