@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from authlib.integrations.requests_client import OAuth2Session
-from config import OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_AUTH_ENDPOINT
+from config import CHAT_ID, OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_AUTH_ENDPOINT
 from utils.logs import log
 from utils.rights import set_rights, remove_rights
 from utils.tokens import create_state
@@ -16,7 +16,7 @@ async def auth_start(client, message):
         await auth_link(client, message)
         return
 
-    set_rights(client, message.from_user.id)
+    await set_rights(client, message.from_user.id)
     answer = '''
 Вы уже авторизованы как [%s](https://ru.wikipedia.org/wiki/User:%s).
 Теперь вы можете отправлять сообщения в чате.
@@ -37,17 +37,22 @@ async def auth_link(client, message):
 async def auth_forget(client, message):
     log(message, 'forget')
     delete_user(message.from_user.id)
-    remove_rights(client, message.from_user.id)
+    await remove_rights(client, message.from_user.id)
 
     answer = "Ваши данные удалены. Чтобы снова писать в чат, авторизуйтесь повторно."
-    await message.reply_chat_action(answer, disable_web_page_preview=True)
+    await message.reply(answer)
 
 
 async def auth_process(client, message):
     log(message, 'process')
     tg_ids = get_all_ids()
-    for tg_id in tg_ids:
-        set_rights(client, tg_id)
 
-    answer = "%d пользователей обработано." % len(tg_ids)
-    await message.reply_chat_action(answer, disable_web_page_preview=True)
+    async for member in client.iter_chat_members(CHAT_ID):
+        tg_id = member.user.id
+        if tg_id in tg_ids:
+            await set_rights(client, tg_id)
+        else:
+            await remove_rights(client, tg_id)
+
+    answer = "%d пользователей авторизовано." % len(tg_ids)
+    await message.reply(answer)

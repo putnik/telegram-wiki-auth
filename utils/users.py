@@ -14,7 +14,8 @@ def init_users_table():
 
 
 def get_all_ids():
-    return fetch_all("SELECT tg_id FROM users")
+    rows = fetch_all("SELECT tg_id FROM users")
+    return [row[0] for row in rows]
 
 
 def get_username(tg_id: int):
