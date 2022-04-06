@@ -41,7 +41,7 @@ def callback():
 
         redirect("/success")
     except Exception as err:
-        log_web('error', 'callback', err)
+        log_web('error', 'callback', str(err))
         log_web('failure', '', request.url)
         redirect("/failure")
 
@@ -55,7 +55,7 @@ def success():
 
         return template(html)
     except Exception as err:
-        log_web('error', 'success', err)
+        log_web('error', 'success', str(err))
         log_web('failure', '', request.url)
         redirect("/failure")
 
