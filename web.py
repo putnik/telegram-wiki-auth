@@ -39,7 +39,6 @@ def callback():
         create_user(tg_id, tg_name, wiki_name)
         log_web('success', wiki_name, resp.text, tg_id)
 
-        response.set_cookie('state', state)
         redirect("/success")
     except Exception as err:
         log_web('error', 'callback', err)
