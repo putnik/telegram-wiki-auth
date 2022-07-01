@@ -56,3 +56,24 @@ async def auth_process(client, message):
 
     answer = "%d пользователей авторизовано." % len(tg_ids)
     await message.reply(answer)
+
+
+async def auth_stats(client, message):
+    log(message, 'stats')
+    tg_ids = get_all_ids()
+
+    answer = "%d пользователей авторизовано." % len(tg_ids)
+    await message.reply(answer)
+
+
+async def auth_list(client, message):
+    log(message, 'list')
+    tg_ids = get_all_ids()
+    bad_users = []
+    async for member in client.iter_chat_members(CHAT_ID):
+        tg_id = member.user.id
+        if tg_id not in tg_ids:
+            bad_users.append("%s (%d)" % (member.user.name, tg_id))
+
+    answer = "%d пользователей не авторизовано:" % len(bad_users) + "\n".join(bad_users)
+    await message.reply(answer)
