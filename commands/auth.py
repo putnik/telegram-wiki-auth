@@ -7,6 +7,15 @@ from utils.rights import set_rights, remove_rights
 from utils.tokens import create_state
 from utils.users import get_all_ids, get_username, delete_user
 
+tg_ids = None
+
+
+def is_authorized(user):
+    global tg_ids
+    if tg_ids is None:
+        tg_ids = get_all_ids()
+    return user.id in tg_ids or user.is_bot
+
 
 async def auth_start(client, message):
     log(message, 'start')
@@ -45,36 +54,32 @@ async def auth_forget(client, message):
 
 async def auth_process(client, message):
     log(message, 'process')
-    tg_ids = get_all_ids()
 
+    count = 0
     async for member in client.iter_chat_members(CHAT_ID):
-        tg_id = member.user.id
-        if tg_id in tg_ids:
-            await set_rights(client, tg_id)
+        if is_authorized(member.user):
+            await set_rights(client, member.user.id)
+            count += 1
         else:
-            await remove_rights(client, tg_id)
+            await remove_rights(client, member.user.id)
 
-    answer = "%d пользователей авторизовано." % len(tg_ids)
+    answer = "%d пользователей авторизовано." % count
     await message.reply(answer)
 
 
 async def auth_stats(client, message):
     log(message, 'stats')
-    tg_ids = get_all_ids()
-
-    answer = "%d пользователей авторизовано." % len(tg_ids)
+    answer = "%d пользователей авторизовано." % len(get_all_ids())
     await message.reply(answer)
 
 
 async def auth_list(client, message):
     log(message, 'list')
-    tg_ids = get_all_ids()
     bad_users = []
     async for member in client.iter_chat_members(CHAT_ID):
-        tg_id = member.user.id
-        if tg_id not in tg_ids:
-            user = member.user
-            bad_users.append("%s %s (%s, %d)" % (user.first_name, user.last_name, user.username, tg_id))
+        user = member.user
+        if not is_authorized(user):
+            bad_users.append("%s %s (%s, %d)" % (user.mention(), user.last_name, user.username, user.id))
 
     answer = "%d пользователей не авторизовано:" % len(bad_users) + "\n".join(bad_users)
     await message.reply(answer)
