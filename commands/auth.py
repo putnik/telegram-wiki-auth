@@ -73,7 +73,8 @@ async def auth_list(client, message):
     async for member in client.iter_chat_members(CHAT_ID):
         tg_id = member.user.id
         if tg_id not in tg_ids:
-            bad_users.append("%s (%d)" % (member.user.username, tg_id))
+            user = member.user
+            bad_users.append("%s %s (%s, %d)" % (user.first_name, user.last_name, user.username, tg_id))
 
     answer = "%d пользователей не авторизовано:" % len(bad_users) + "\n".join(bad_users)
     await message.reply(answer)
