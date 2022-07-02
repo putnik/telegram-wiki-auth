@@ -79,11 +79,11 @@ async def auth_list(client, message):
     async for member in client.iter_chat_members(CHAT_ID):
         user = member.user
         if not is_authorized(user):
-            bad_users.append("%s %s (%s, %s)" % (
+            bad_users.append("%s %s (%s, %d)" % (
                 user.first_name,
                 user.last_name,
                 user.username,
-                user.mention(str(user.id))
+                user.id
             ))
 
     answer = "%d пользователей не авторизовано:" % len(bad_users) + "\n".join(bad_users)
